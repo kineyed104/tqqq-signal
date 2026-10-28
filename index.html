@@ -106,6 +106,7 @@ h2 { font-size: 16px; margin: 0 0 10px; }
 .notice.diff { background: var(--hot-bg); }
 .notice.warn { background: var(--hot-bg); }
 .notice.same { background: var(--off-bg); color: var(--ink-2); }
+.info-note { margin: 6px 0 0; }
 .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .badge {
   font-size: 12px; padding: 2px 8px; border-radius: 999px;
@@ -306,7 +307,8 @@ tr.changed td { background: var(--hot-bg); }
     el("heroMeta").innerHTML =
       "<span>데이터 끝 <b>" + esc(D.dataEnd) + "</b> (QQQ 종가 " + s.close.toFixed(2) + ", " + pct(s.changePct) + ")</span>" +
       updatedText() +
-      "<span>HYG " + esc(D.creditEnd.HYG) + " · IEF " + esc(D.creditEnd.IEF) + "</span>" +
+      "<span>HYG " + esc(D.creditEnd.HYG) + " · IEF " + esc(D.creditEnd.IEF) +
+      (s.creditAsOf ? " <span class=\"small\">(신용 데이터 " + esc(s.creditAsOf.slice(5)) + " 기준)</span>" : "") + "</span>" +
       "<span>전일 신호 " + tgtText(s.prevTarget.long, s.prevTarget.inverse) + "</span>";
     var notes = [statusBadges()];
     if (s.differsFromV11) {
@@ -320,6 +322,9 @@ tr.changed td { background: var(--hot-bg); }
     }
     (D.warnings || []).forEach(function (w) {
       notes.push("<div class=\"notice warn\">경고: " + esc(w) + "</div>");
+    });
+    (D.notes || []).forEach(function (n) {
+      notes.push("<p class=\"small info-note\">참고: " + esc(n) + "</p>");
     });
     el("heroNotices").innerHTML = notes.join("");
   }
